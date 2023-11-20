@@ -24,7 +24,7 @@ class RewriteImportDataclasses(CompilingNodeTransformer):
                 node.names[i].name == n
             ), "The program must contain one 'from dataclasses import dataclass'"
             assert (
-                node.names[i].asname == None
+                node.names[i].asname is None
             ), "The program must contain one 'from dataclasses import dataclass'"
         self.imports_dataclasses = True
         return None

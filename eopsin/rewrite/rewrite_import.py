@@ -59,7 +59,7 @@ class RewriteImport(CompilingNodeTransformer):
             node.names[0].name == "*"
         ), "The import must have the form 'from <pkg> import *'"
         assert (
-            node.names[0].asname == None
+            node.names[0].asname is None
         ), "The import must have the form 'from <pkg> import *'"
         # TODO set anchor point according to own package
         if self.filename:

@@ -9,14 +9,13 @@ class Empty(PlutusData):
 def all_tokens_unlocked_from_contract_address(
     txins: List[TxInInfo], address: Address, token: Token
 ) -> int:
-    # generally always iterate over all inputs to avoid double spending
-    res = 0
-    for txi in txins:
-        if txi.resolved.address == address:
-            res += txi.resolved.value.get(token.policy_id, {b"": 0}).get(
-                token.token_name, 0
-            )
-    return res
+    return sum(
+        txi.resolved.value.get(token.policy_id, {b"": 0}).get(
+            token.token_name, 0
+        )
+        for txi in txins
+        if txi.resolved.address == address
+    )
 
 
 def own_spent_utxo(txins: List[TxInInfo], p: Spending) -> TxOut:
@@ -90,11 +89,9 @@ def validator(
         ctx.tx_info.inputs, own_addr, token
     )
     all_minted = ctx.tx_info.mint.get(own_pid, {b"": 0}).get(b"w" + token_name, 0)
-    print("unlocked from contract: " + str(all_unlocked))
-    print("locked at contract: " + str(all_locked))
-    print("minted: " + str(all_minted))
+    print(f"unlocked from contract: {str(all_unlocked)}")
+    print(f"locked at contract: {str(all_locked)}")
+    print(f"minted: {str(all_minted)}")
     assert (
         (all_locked - all_unlocked) * wrapping_factor
-    ) == all_minted, "Wrong amount of tokens minted, difference: " + str(
-        (all_locked - all_unlocked) * wrapping_factor - all_minted
-    )
+    ) == all_minted, f"Wrong amount of tokens minted, difference: {str((all_locked - all_unlocked) * wrapping_factor - all_minted)}"

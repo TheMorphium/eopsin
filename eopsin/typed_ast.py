@@ -1041,7 +1041,7 @@ def empty_list(p: Type):
                 ),
             )
         )
-    if isinstance(p.typ, RecordType) or isinstance(p.typ, AnyType):
+    if isinstance(p.typ, (RecordType, AnyType)):
         return plt.EmptyDataList()
     raise NotImplementedError(f"Empty lists of type {p} can't be constructed yet")
 
@@ -1113,7 +1113,7 @@ class TypedNodeTransformer(NodeTransformer):
         node_class_name = node.__class__.__name__
         if node_class_name.startswith("Typed"):
             node_class_name = node_class_name[len("Typed") :]
-        method = "visit_" + node_class_name
+        method = f"visit_{node_class_name}"
         visitor = getattr(self, method, self.generic_visit)
         return visitor(node)
 
@@ -1124,6 +1124,6 @@ class TypedNodeVisitor(NodeVisitor):
         node_class_name = node.__class__.__name__
         if node_class_name.startswith("Typed"):
             node_class_name = node_class_name[len("Typed") :]
-        method = "visit_" + node_class_name
+        method = f"visit_{node_class_name}"
         visitor = getattr(self, method, self.generic_visit)
         return visitor(node)

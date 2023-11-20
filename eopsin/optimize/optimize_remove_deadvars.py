@@ -66,10 +66,7 @@ class OptimizeRemoveDeadvars(CompilingNodeTransformer):
 
     def guaranteed(self, name: str) -> bool:
         name = name
-        for scope in reversed(self.guaranteed_avail_names):
-            if name in scope:
-                return True
-        return False
+        return any(name in scope for scope in reversed(self.guaranteed_avail_names))
 
     def enter_scope(self):
         self.guaranteed_avail_names.append([])

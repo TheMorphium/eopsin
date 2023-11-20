@@ -15,7 +15,7 @@ class RewriteAugAssign(CompilingNodeTransformer):
     def visit_AugAssign(self, node: AugAssign) -> Assign:
         target_cp = copy(node.target)
         target_cp.ctx = Load()
-        a = Assign(
+        return Assign(
             [self.visit(node.target)],
             BinOp(
                 self.visit(target_cp),
@@ -23,4 +23,3 @@ class RewriteAugAssign(CompilingNodeTransformer):
                 self.visit(node.value),
             ),
         )
-        return a

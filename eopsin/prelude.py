@@ -495,11 +495,11 @@ def all_tokens_unlocked_from_address(
 ) -> int:
     """Returns how many tokens of specified type are unlocked from given address"""
     return sum(
-        [
-            txi.resolved.value.get(token.policy_id, {b"": 0}).get(token.token_name, 0)
-            for txi in txins
-            if txi.resolved.address == address
-        ]
+        txi.resolved.value.get(token.policy_id, {b"": 0}).get(
+            token.token_name, 0
+        )
+        for txi in txins
+        if txi.resolved.address == address
     )
 
 
@@ -508,11 +508,9 @@ def all_tokens_locked_at_address_with_datum(
 ) -> int:
     """Returns how many tokens of specified type are locked at then given address with the specified datum"""
     return sum(
-        [
-            txo.value.get(token.policy_id, {b"": 0}).get(token.token_name, 0)
-            for txo in txouts
-            if txo.address == address and txo.datum == output_datum
-        ]
+        txo.value.get(token.policy_id, {b"": 0}).get(token.token_name, 0)
+        for txo in txouts
+        if txo.address == address and txo.datum == output_datum
     )
 
 
@@ -521,11 +519,9 @@ def all_tokens_locked_at_address(
 ) -> int:
     """Returns how many tokens of specified type are locked at the given address"""
     return sum(
-        [
-            txo.value.get(token.policy_id, {b"": 0}).get(token.token_name, 0)
-            for txo in txouts
-            if txo.address == address
-        ]
+        txo.value.get(token.policy_id, {b"": 0}).get(token.token_name, 0)
+        for txo in txouts
+        if txo.address == address
     )
 
 

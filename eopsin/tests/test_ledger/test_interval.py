@@ -139,8 +139,8 @@ def test_contains(a: POSIXTimeRange, b: POSIXTimeRange):
     lower = compare_lower_bound(a.lower_bound, b.lower_bound)
     upper = compare_upper_bound(a.upper_bound, b.upper_bound)
     if contains(a, b):
-        assert lower == 1 or lower == 0
-        assert upper == 0 or upper == -1
+        assert lower in [1, 0]
+        assert upper in [0, -1]
     else:
         assert lower == -1 or upper == 1
 
@@ -200,8 +200,5 @@ def test_fuzz_compare_extended_helper(time: ExtendedPOSIXTime) -> None:
 
 @given(b=st.booleans())
 def test_get_bool(b: bool) -> None:
-    if b:
-        bool_data = TrueData()
-    else:
-        bool_data = FalseData()
+    bool_data = TrueData() if b else FalseData()
     assert get_bool(bool_data) == b

@@ -223,7 +223,6 @@ class AggressiveTypeInferencer(CompilingNodeTransformer):
         typed_if = copy(node)
         if (
             isinstance(typed_if.test, Call)
-            and (typed_if.test.func, Name)
             and typed_if.test.func.id == "isinstance"
         ):
             tc = typed_if.test
@@ -246,7 +245,7 @@ class AggressiveTypeInferencer(CompilingNodeTransformer):
             assert isinstance(target_class, RecordType), "Can only cast to PlutusData"
             assert (
                 target_class in target_inst_class.typ.typs
-            ), f"Trying to cast an instance of Union type to non-instance of union type"
+            ), "Trying to cast an instance of Union type to non-instance of union type"
             typed_if.test = self.visit(
                 Compare(
                     left=Attribute(tc.args[0], "CONSTR_ID"),
@@ -475,7 +474,7 @@ class AggressiveTypeInferencer(CompilingNodeTransformer):
         elif isinstance(ts.value.typ.typ, DictType):
             # TODO could be implemented with potentially just erroring. It might be desired to avoid this though.
             raise TypeInferenceError(
-                f"Could not infer type of subscript of dict. Use 'get' with a default value instead."
+                "Could not infer type of subscript of dict. Use 'get' with a default value instead."
             )
         else:
             raise TypeInferenceError(
@@ -517,8 +516,7 @@ class AggressiveTypeInferencer(CompilingNodeTransformer):
         raise TypeInferenceError("Could not infer type of call")
 
     def visit_Pass(self, node: Pass) -> TypedPass:
-        tp = copy(node)
-        return tp
+        return copy(node)
 
     def visit_Return(self, node: Return) -> TypedReturn:
         tp = copy(node)
