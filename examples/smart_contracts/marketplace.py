@@ -37,10 +37,7 @@ def check_paid(txouts: List[TxOut], addr: Address, price: int) -> None:
 
 def check_single_utxo_spent(txins: List[TxInInfo], addr: Address) -> None:
     """To prevent double spending, count how many UTxOs are unlocked from the contract address"""
-    count = 0
-    for txi in txins:
-        if txi.resolved.address == addr:
-            count += 1
+    count = sum(1 for txi in txins if txi.resolved.address == addr)
     assert count == 1, "Only 1 contract utxo allowed"
 
 

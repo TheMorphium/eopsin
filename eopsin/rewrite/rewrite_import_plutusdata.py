@@ -29,7 +29,7 @@ class RewriteImportPlutusData(CompilingNodeTransformer):
             node.names[1].name == "PlutusData"
         ), "The program must contain one 'from pycardano import Datum as Anything, PlutusData'"
         assert (
-            node.names[1].asname == None
+            node.names[1].asname is None
         ), "The program must contain one 'from pycardano import Datum as Anything, PlutusData'"
         self.imports_plutus_data = True
         return None

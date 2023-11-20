@@ -292,8 +292,7 @@ class UPLCCompiler(CompilingNodeTransformer):
             raise RuntimeError(
                 "The contract can not always detect if it was passed three or two parameters on-chain."
             )
-        cp = plt.Program("1.0.0", validator)
-        return cp
+        return plt.Program("1.0.0", validator)
 
     def visit_Constant(self, node: TypedConstant) -> plt.AST:
         plt_type = ConstantMap.get(type(node.value))
@@ -796,10 +795,7 @@ class UPLCCompiler(CompilingNodeTransformer):
         lst = plt.Apply(self.visit(gen.iter), plt.Var(STATEMONAD))
         ifs = None
         for ifexpr in gen.ifs:
-            if ifs is None:
-                ifs = self.visit(ifexpr)
-            else:
-                ifs = plt.And(ifs, self.visit(ifexpr))
+            ifs = self.visit(ifexpr) if ifs is None else plt.And(ifs, self.visit(ifexpr))
         map_fun = plt.Lambda(
             ["x"],
             plt.Apply(

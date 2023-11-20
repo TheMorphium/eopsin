@@ -10,7 +10,7 @@ def validator(n: int) -> int:
         a += 5
     while b < 5:
         b += 1
-    for i in range(2):
+    for _ in range(2):
         print("loop")
 
     # sha256, sha3_256 and blake2b

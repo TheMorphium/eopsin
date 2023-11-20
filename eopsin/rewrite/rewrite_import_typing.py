@@ -24,7 +24,7 @@ class RewriteImportTyping(CompilingNodeTransformer):
                 node.names[i].name == n
             ), "The program must contain one 'from typing import Dict, List, Union'"
             assert (
-                node.names[i].asname == None
+                node.names[i].asname is None
             ), "The program must contain one 'from typing import Dict, List, Union'"
         self.imports_typing = True
         return None

@@ -6,12 +6,11 @@ def compare(a: int, b: int) -> int:
     # a == b: 0
     # a > b: -1
     if a < b:
-        result = 1
+        return 1
     elif a == b:
-        result = 0
+        return 0
     else:
-        result = -1
-    return result
+        return -1
 
 
 def compare_extended_helper(time: ExtendedPOSIXTime) -> int:
@@ -31,21 +30,15 @@ def compare_extended(a: ExtendedPOSIXTime, b: ExtendedPOSIXTime) -> int:
     # a > b: -1
     a_val = compare_extended_helper(a)
     b_val = compare_extended_helper(b)
-    if a_val == 0 and b_val == 0:
-        a_finite: FinitePOSIXTime = a
-        b_finite: FinitePOSIXTime = b
-        result = compare(a_finite.time, b_finite.time)
-    else:
-        result = compare(a_val, b_val)
-    return result
+    if a_val != 0 or b_val != 0:
+        return compare(a_val, b_val)
+    a_finite: FinitePOSIXTime = a
+    b_finite: FinitePOSIXTime = b
+    return compare(a_finite.time, b_finite.time)
 
 
 def get_bool(b: BoolData) -> bool:
-    if isinstance(b, TrueData):
-        result = True
-    else:
-        result = False
-    return result
+    return isinstance(b, TrueData)
 
 
 def compare_upper_bound(a: UpperBoundPOSIXTime, b: UpperBoundPOSIXTime) -> int:
@@ -76,7 +69,7 @@ def contains(a: POSIXTimeRange, b: POSIXTimeRange) -> bool:
     # Returns True if the interval `b` is entirely contained in `a`.
     lower = compare_lower_bound(a.lower_bound, b.lower_bound)
     upper = compare_upper_bound(a.upper_bound, b.upper_bound)
-    return (lower == 1 or lower == 0) and (upper == 0 or upper == -1)
+    return lower in [1, 0] and upper in [0, -1]
 
 
 def make_range(

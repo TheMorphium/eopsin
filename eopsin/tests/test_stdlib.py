@@ -141,7 +141,7 @@ def validator(x: None) -> str:
         self.assertEqual(ret, xs, "literal string returned wrong value")
 
     def test_constant_unit(self):
-        source_code = f"""
+        source_code = """
 def validator(x: None) -> None:
     return None
             """
